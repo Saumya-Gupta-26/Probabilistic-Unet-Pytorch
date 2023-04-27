@@ -1,0 +1,13 @@
+{
+    "common":{
+        "activity": "validation",
+        "img_file": "/data/saumgupta/rose/data/ROSE-1/SVC/test/img-patches",
+        "gt_file": "/data/saumgupta/rose/data/ROSE-1/SVC/test/gt-patches",
+        "checkpoint_restore":"/data/saumgupta/prob_unet/experiments/ROSE/model_best.pth.tar"
+    },
+    "validation":{
+        "validation_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/2D/params/ROSE/test-list.csv",
+        "output_folder":"/data/saumgupta/prob_unet/experiments/ROSE/test-outputs/model_best/",
+        "validation_batch_size":1
+    }
+}

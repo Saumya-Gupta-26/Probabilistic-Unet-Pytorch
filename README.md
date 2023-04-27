@@ -37,3 +37,25 @@ for epoch in range(epochs):
 ## Train on LIDC Dataset
 One of the datasets used in the original paper is the [LIDC dataset](https://wiki.cancerimagingarchive.net). I've preprocessed this data and stored them in a pickle file, which you can [download here](https://drive.google.com/drive/folders/1xKfKCQo8qa6SAr3u7qWNtQjIphIrvmd5?usp=sharing). After downloading the files you should place them in a folder called 'data'. After that, you can train your own Probabilistic UNet on the LIDC dataset using the simple train script provided in train_model.py.
 
+# Modified by Saumya using Structural DMT code
+Train code
+### DRIVE
+```
+CUDA_VISIBLE_DEVICES=7 python3 train_model.py --dataset DRIVE --params params/DRIVE_train.json --train_batch 8
+```
+
+### ROSE
+```
+CUDA_VISIBLE_DEVICES=7 python3 train_model.py --dataset ROSE --params params/ROSE_train.json --train_batch 6
+```
+
+Test code
+### DRIVE
+```
+CUDA_VISIBLE_DEVICES=7 python3 infer.py --dataset DRIVE --params params/DRIVE_validation.json
+```
+
+### ROSE
+```
+CUDA_VISIBLE_DEVICES=7 python3 infer.py --dataset ROSE --params params/ROSE_validation.json
+```

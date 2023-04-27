@@ -1,0 +1,14 @@
+{
+    "common":{
+        "activity": "train",
+        "img_file": "/data/saumgupta/rose/data/ROSE-1/SVC/train/img",
+        "gt_file": "/data/saumgupta/rose/data/ROSE-1/SVC/train/gt"
+        },
+    "train":{
+        "train_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/2D/params/ROSE/train-list.csv",
+        "validation_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/2D/params/ROSE/val-list.csv",
+        "train_batch_size":6,
+        "validation_batch_size":1,
+        "output_folder":"/data/saumgupta/prob_unet"
+    }
+}

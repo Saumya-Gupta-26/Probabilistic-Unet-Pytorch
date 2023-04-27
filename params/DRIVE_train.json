@@ -1,0 +1,14 @@
+{
+    "common":{
+        "activity": "train",
+        "img_file": "/data/saumgupta/DRIVE/training/images",
+        "gt_file": "/data/saumgupta/DRIVE/training/1st_manual"
+        },
+    "train":{
+        "train_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/2D/params/DRIVE/train-list.csv",
+        "validation_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/2D/params/DRIVE/val-list.csv",
+        "train_batch_size":8,
+        "validation_batch_size":1,
+        "output_folder":"/data/saumgupta/prob_unet"
+    }
+}

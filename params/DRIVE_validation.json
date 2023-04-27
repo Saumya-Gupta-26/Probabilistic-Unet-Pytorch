@@ -1,0 +1,13 @@
+{
+    "common":{
+        "activity": "validation",
+        "img_file": "/data/saumgupta/DRIVE/test/images-patches-type2",
+        "gt_file": "/data/saumgupta/DRIVE/test/1st_manual-png-patches-type2",
+        "checkpoint_restore":"/data/saumgupta/prob_unet/experiments/DRIVE/model_best.pth.tar"
+    },
+    "validation":{
+        "validation_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/2D/params/DRIVE/test-list.csv",
+        "output_folder":"/data/saumgupta/prob_unet/experiments/DRIVE/test-outputs/model_best-type2/",
+        "validation_batch_size":1
+    }
+}
