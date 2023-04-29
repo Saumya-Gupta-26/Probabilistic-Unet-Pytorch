@@ -1,0 +1,14 @@
+{
+    "common":{
+        "activity": "train",
+        "img_file": "/data/saumgupta/parse2022/nnUNet_raw_data/Task101_VESSEL/imagesTr_slices",
+        "gt_file": "/data/saumgupta/parse2022/nnUNet_raw_data/Task101_VESSEL/labelsTr_slices"
+        },
+    "train":{
+        "train_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/3D/datalists/sbu/train-list.csv",
+        "validation_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/3D/datalists/sbu/val-list-2d.csv",
+        "train_batch_size":8,
+        "validation_batch_size":1,
+        "output_folder":"/data/saumgupta/prob_unet"
+    }
+}

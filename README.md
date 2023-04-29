@@ -49,6 +49,11 @@ CUDA_VISIBLE_DEVICES=7 python3 train_model.py --dataset DRIVE --params params/DR
 CUDA_VISIBLE_DEVICES=7 python3 train_model.py --dataset ROSE --params params/ROSE_train.json --train_batch 6
 ```
 
+### PARSE2D
+```
+CUDA_VISIBLE_DEVICES=3 python3 train_model.py --dataset PARSE2D --params params/PARSE2D_train.json --train_batch 8
+```
+
 Test code
 ### DRIVE
 ```

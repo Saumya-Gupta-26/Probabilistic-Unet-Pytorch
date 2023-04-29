@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data.sampler import SubsetRandomSampler
 from probabilistic_unet import ProbabilisticUnet
 from utils import l2_regularisation
-from dataloader import CREMI, ISBI2013, DRIVE, ROSE
+from dataloader import CREMI, ISBI2013, DRIVE, ROSE, PARSE_2D
 import argparse, sys, json
 import os, shutil
 from saver import Saver
@@ -91,6 +91,15 @@ if __name__ == "__main__":
 
         # Validation Data
         validation_set = ROSE(mydict['validation_datalist'], mydict['files'], is_training= True, constcorner=True)
+        validation_generator = torch.utils.data.DataLoader(validation_set,batch_size=mydict['validation_batch_size'],shuffle=False,num_workers=1, drop_last=False)
+        net = ProbabilisticUnet(input_channels=1, num_classes=1, num_filters=[32,64,128,192], latent_dim=1, no_convs_fcomb=4, beta=10.0)
+
+    elif args.dataset == 'PARSE2D':         
+        training_set = PARSE_2D(mydict['train_datalist'], mydict['files'], is_training= True)
+        training_generator = torch.utils.data.DataLoader(training_set,batch_size=mydict['train_batch_size'],shuffle=True,num_workers=1, drop_last=True)
+
+        # Validation Data
+        validation_set = PARSE_2D(mydict['validation_datalist'], mydict['files'], is_training= False)
         validation_generator = torch.utils.data.DataLoader(validation_set,batch_size=mydict['validation_batch_size'],shuffle=False,num_workers=1, drop_last=False)
         net = ProbabilisticUnet(input_channels=1, num_classes=1, num_filters=[32,64,128,192], latent_dim=1, no_convs_fcomb=4, beta=10.0)
 
