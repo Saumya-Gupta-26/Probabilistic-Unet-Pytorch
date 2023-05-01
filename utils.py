@@ -3,6 +3,9 @@ import torch.nn as nn
 from torch.autograd import Variable
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
+import numpy as np 
+import pdb, os, glob, sys, shutil
+
 
 def truncated_normal_(tensor, mean=0, std=1):
     size = tensor.shape
@@ -40,3 +43,63 @@ def save_mask_prediction_example(mask, pred, iter):
 	plt.savefig('images/'+str(iter)+"_prediction.png")
 	plt.imshow(mask[0,:,:],cmap='Greys')
 	plt.savefig('images/'+str(iter)+"_mask.png")
+
+# saumya
+def compute_ece_plot(pred_lm, target, plotfile=None, num_bins=100):
+
+    #pred_lm = pred_lm[:,:565] # for DRIVE
+    #pdb.set_trace()
+
+    # flatten to 1D
+    pred_binary = np.where(pred_lm >= 0.5, 1., 0.).flatten()
+    pred_lm = pred_lm.flatten()
+    target = target.flatten()
+
+    binpoints = np.linspace(start=0., stop=1., num=num_bins+1)
+
+    # sort based on probability values ; create the bins
+    cat = np.rec.fromarrays([pred_lm, pred_binary, target]) # f0, f1, f2
+    cat.sort()
+
+    stats = {'counts':np.zeros(len(binpoints)),'acc':np.zeros(len(binpoints)),'conf':np.zeros(len(binpoints))}
+    running = {'counts':0., 'acc':0., 'conf':0.}
+    idx = 0 # iterates through samples in cat ; jidx iterates through bins
+    
+    for jdx, val in enumerate(binpoints):
+        if jdx == 0:
+            continue
+        while idx < len(cat.f0) and cat.f0[idx] <= val:
+            running['counts'] += 1
+            running['conf'] += cat.f0[idx]
+            if cat.f1[idx] == cat.f2[idx]:
+                running['acc'] += 1
+            idx += 1
+        
+        stats['counts'][jdx] = running['counts']
+        stats['acc'][jdx] = running['acc']/running['counts']
+        stats['conf'][jdx] = running['conf']/running['counts']
+
+        if idx >= len(cat.f0):
+            break
+        running = {'counts':0., 'acc':0., 'conf':0.}
+            
+    # ece computation and plot dump
+    total_samples = len(target)
+    ece_val = 0.
+
+    if plotfile:
+        writefile = open(plotfile, 'w')
+        writefile.write("counts,accuracy,confidence; total count={}\n".format(total_samples))
+
+    for idx in range(stats['counts'].shape[0]):
+        ece_val += (stats['counts'][idx] * np.abs(stats['acc'][idx] - stats['conf'][idx]))
+        
+        if plotfile:
+            writefile.write("{},{},{}\n".format(stats['counts'][idx], stats['acc'][idx],stats['conf'][idx]))
+
+    ece_val = ece_val / total_samples
+    
+    if plotfile:
+        writefile.close()
+
+    return ece_val

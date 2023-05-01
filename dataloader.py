@@ -12,6 +12,7 @@ from os.path import join as pjoin
 from torchvision import transforms
 from torch.utils import data
 from skimage import io
+import pdb
 
 class CREMI(data.Dataset):
     def __init__(self, listpath, filepaths, is_training=False):
@@ -366,7 +367,7 @@ class ROSE_folder(data.Dataset):
 
         for i, im_path in enumerate(mylist):
             gt_path = im_path.replace("img", "gt")
-
+            #pdb.set_trace()
             assert os.path.exists(gt_path)
 
             img = Image.open(im_path)
@@ -427,12 +428,23 @@ class DRIVE_folder(data.Dataset):
 
         for i, im_path in enumerate(mylist):
             #gt_path = pjoin(self.gtfolder, filename) + '_manual1.gif'
+
             fname = im_path.replace(self.suffix, ".png").split('/')[-1]
             fname = "gt_" + im_path.replace("_test", "").split('/')[-2] + '/' + fname
             gt_path = glob.glob(self.gtfolder + "/" + fname)
-
+            pdb.set_trace()
             assert len(gt_path) == 1
             gt_path = gt_path[0]
+            '''
+            # code for full-length images ; above code for patch-images
+            fname = im_path.replace(self.suffix, ".png").split('/')[-1]
+            fname = "gt_" + fname.replace("_test", "")
+            gt_path = glob.glob(self.gtfolder + "/" + fname)
+            #pdb.set_trace()
+            assert len(gt_path) == 1
+            gt_path = gt_path[0]
+            '''
+
 
             img = Image.open(im_path)
             gt = np.array(Image.open(gt_path))[:,:,0]/255.

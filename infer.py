@@ -18,6 +18,7 @@ import torch.nn.functional as F
 import seaborn as sns
 import matplotlib.pyplot as plt
 from PIL import Image
+from utils import compute_ece_plot
 num_samples = 10
 
 def parse_func(args):
@@ -34,6 +35,10 @@ def parse_func(args):
     mydict['test_datalist'] = params['validation']['validation_datalist']
     mydict['output_folder'] = params['validation']['output_folder']
     mydict['validation_batch_size'] = int(params['validation']['validation_batch_size'])
+
+    mydict['dump_plotfile'] = False
+    if params['validation']['dump_plotfile'].lower() == "true":
+        mydict['dump_plotfile'] = True
     
     return activity, mydict
 
@@ -93,6 +98,10 @@ if __name__ == "__main__":
     with torch.no_grad():
         net.eval()
         validation_iterator = iter(validation_generator)
+
+        writefile = open(os.path.join(mydict['output_folder'], "metric_values_ece.txt"),"w")
+        ece_list = []
+
         for i in range(len(validation_generator)):
 
             mask_pred_list = []
@@ -146,4 +155,18 @@ if __name__ == "__main__":
                     im_pred.save(os.path.join(tempdir, 'pred_' + filename.split('/')[-1] + '_sample{}.png'.format(ns)))
                     
                     #save_image(mask_pred_list[ns][j,:,:], os.path.join(tempdir, 'pred_' + filename.split('/')[-1] + '_sample{}.png'.format(ns)))
+            
+                avg_likelihood = np.mean(torch.squeeze(torch.stack(mask_pred_list, 0)).cpu().detach().numpy(), axis=0)
+                if mydict['dump_plotfile'] == False:
+                    plotfile = None 
+                else:
+                    plotfile = os.path.join(tempdir, 'ece_' + filename.split('/')[-1] + '.txt')
+                ece_val = compute_ece_plot(avg_likelihood, y_gt[j,:,:].cpu().detach().numpy(), plotfile, num_bins=100)
+                writefile.write("{}\nECE: {}\n\n".format(filename.split('/')[-1], ece_val))
+                ece_list.append(ece_val)
+
             print("Done: {}".format(filename))
+        
+        writefile.write("Avg ECE: {}".format(np.mean(np.array(ece_list))))
+        writefile.write("\nStddev ECE: {}".format(np.std(np.array(ece_list))))
+        writefile.close()
