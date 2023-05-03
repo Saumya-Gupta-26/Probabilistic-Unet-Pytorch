@@ -76,8 +76,9 @@ def compute_ece_plot(pred_lm, target, plotfile=None, num_bins=100):
             idx += 1
         
         stats['counts'][jdx] = running['counts']
-        stats['acc'][jdx] = running['acc']/running['counts']
-        stats['conf'][jdx] = running['conf']/running['counts']
+        if running['counts'] != 0:
+            stats['acc'][jdx] = running['acc']/running['counts']
+            stats['conf'][jdx] = running['conf']/running['counts']
 
         if idx >= len(cat.f0):
             break

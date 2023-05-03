@@ -1,0 +1,14 @@
+{
+    "common":{
+        "activity": "validation",
+        "img_file": "/data/saumgupta/parse2022/nnUNet_raw_data/Task101_VESSEL/imagesTr_slices",
+        "gt_file": "/data/saumgupta/parse2022/nnUNet_raw_data/Task101_VESSEL/labelsTr_slices",
+        "checkpoint_restore":"/data/saumgupta/prob_unet/experiments/PARSE2D/model_best.pth.tar"
+    },
+    "validation":{
+        "validation_datalist":"/home/saumgupta/dmt-crf-gnn-mlp/3D/datalists/sbu/test-list.csv",
+        "output_folder":"/data/saumgupta/prob_unet/experiments/PARSE2D/test-outputs/model_best/",
+        "validation_batch_size":1,
+        "dump_plotfile":""
+    }
+}

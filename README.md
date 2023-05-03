@@ -64,3 +64,8 @@ CUDA_VISIBLE_DEVICES=7 python3 infer.py --dataset DRIVE --params params/DRIVE_va
 ```
 CUDA_VISIBLE_DEVICES=7 python3 infer.py --dataset ROSE --params params/ROSE_validation.json
 ```
+
+### PARSE
+```
+CUDA_VISIBLE_DEVICES=6 python3 infer_parse.py --dataset PARSE2D --params params/PARSE2D_validation.json
+```
